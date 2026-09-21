@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8262d636bfa6cb940a6d3ced13bc738f, type: 3}
+  m_Name: Boomerang_Weapon
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  weaponName: Bumerangue
+  icon: {fileID: 21300000, guid: 181b3941f4c88b54d8fe3e02e977d39e, type: 3}
+  weaponPrefab: {fileID: 5182224385942987129, guid: a4813e782838f9842a4de81bbde4f8b7, type: 3}
+  spawnPosition: {x: 0.617, y: -0.087}
+  levels:
+  - description: Melhora o bumerangue
+    damage: 1
+    cooldown: 1
+    speed: 17
+    duration: 1
+    projectileCount: 1
+    area: 1
+  - description: Melhora o bumerangue
+    damage: 1
+    cooldown: 1
+    speed: 18
+    duration: 1
+    projectileCount: 1
+    area: 1
+  - description: Melhora o bumerangue
+    damage: 1
+    cooldown: 2.7
+    speed: 18
+    duration: 4
+    projectileCount: 2
+    area: 1
+  - description: Melhora o bumerangue
+    damage: 1.5
+    cooldown: 1
+    speed: 19
+    duration: 1
+    projectileCount: 2
+    area: 1
+  - description: Melhora o bumerangue
+    damage: 2
+    cooldown: 1
+    speed: 19
+    duration: 1
+    projectileCount: 2
+    area: 1
