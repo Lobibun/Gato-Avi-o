@@ -1,13 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Arrow : MonoBehaviour
+public class Arrow : Projectile
 {
     private float damage;
-    private float speed;
     private float lifeTime;
-    private Vector2 direction;
-
     private float tempoTotalQueDurou;
 
     private List<IDamageable> hitEnemies = new List<IDamageable>();
@@ -18,32 +15,28 @@ public class Arrow : MonoBehaviour
 
     public void Setup(Vector2 dir, float dmg, float spd, float life)
     {
-        this.direction = dir.normalized;
-        this.damage = dmg;
-        this.speed = spd;
-        this.lifeTime = life;
-        this.tempoTotalQueDurou = life;
-        
-        UpdateRotation();
+        damage = dmg;
+        speed = spd;
+        lifeTime = life;
+        tempoTotalQueDurou = life;
+
+        SetDirection(dir);
     }
 
     void Start()
     {
         mainCamera = Camera.main;
-        
+
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         if (sr != null) spriteSize = sr.bounds.extents;
     }
 
-    void Update()
+    protected override void Update()
     {
-        // Move a seta
-        transform.position += (Vector3)direction * speed * Time.deltaTime;
-        
-        // Verifica se saiu da tela e faz o ricochete
+        base.Update();
+
         UpdateBoundsAndBounce();
 
-        // Destrói após o tempo de vida acabar
         lifeTime -= Time.deltaTime;
         if (lifeTime <= 0)
         {
@@ -58,7 +51,7 @@ public class Arrow : MonoBehaviour
 
         float camDistance = Mathf.Abs(mainCamera.transform.position.z - transform.position.z);
         Vector3 bottomLeft = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, camDistance));
-        Vector3 topRight   = mainCamera.ViewportToWorldPoint(new Vector3(1, 1, camDistance));
+        Vector3 topRight = mainCamera.ViewportToWorldPoint(new Vector3(1, 1, camDistance));
 
         minX = bottomLeft.x + spriteSize.x;
         maxX = topRight.x - spriteSize.x;
@@ -68,7 +61,6 @@ public class Arrow : MonoBehaviour
         Vector3 currentPos = transform.position;
         bool didBounce = false;
 
-        // Bateu nas laterais (Esquerda/Direita)
         if (currentPos.x <= minX)
         {
             currentPos.x = minX;
@@ -82,7 +74,6 @@ public class Arrow : MonoBehaviour
             didBounce = true;
         }
 
-        // Bateu em cima/embaixo
         if (currentPos.y <= minY)
         {
             currentPos.y = minY;
@@ -96,12 +87,11 @@ public class Arrow : MonoBehaviour
             didBounce = true;
         }
 
-        // Se quicou, aplica a posição, gira e "esquece" os inimigos que já bateu
         if (didBounce)
         {
             transform.position = currentPos;
-            UpdateRotation();
-            hitEnemies.Clear(); 
+            RotateToFaceDirection();
+            hitEnemies.Clear();
         }
     }
 
@@ -110,22 +100,12 @@ public class Arrow : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             IDamageable dmgObj = other.GetComponent<IDamageable>();
-            
-            // Se tem vida e ainda NÃO tomou dano nesta passada da seta
+
             if (dmgObj != null && !hitEnemies.Contains(dmgObj))
             {
                 DamageSystem.ApplyDamage(other.gameObject, damage);
-                
-                // Lembra do inimigo para não dar dano repetido no mesmo frame
                 hitEnemies.Add(dmgObj);
             }
         }
-    }
-
-    void UpdateRotation()
-    {
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        
-        transform.rotation = Quaternion.Euler(0, 0, angle - 90f);
     }
 }

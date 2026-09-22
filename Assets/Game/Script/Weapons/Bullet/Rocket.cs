@@ -1,35 +1,20 @@
 using UnityEngine;
 
-public class Rocket : MonoBehaviour
+public class Rocket : Projectile
 {
     [Header("Configuração")]
-    public float speed;
     public float damage;
     public float explosionRadius;
 
     [Header("Ajuste Visual")]
     public float spriteScaleAdjustment;
 
-    [Header("Refencias")]
+    [Header("Referências")]
     public LayerMask enemyLayer;
-    public GameObject explosionEffect; 
-    private Vector3 direction;
-
-    public void SetDirection(Vector3 dir)
-    {
-        direction = dir.normalized;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle);
-    }
-
-    void Update()
-    {
-        transform.position += direction * speed * Time.deltaTime;
-    }
+    public GameObject explosionEffect;
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // 1. Se bater na parede, só destrói
         if (other.CompareTag("Wall"))
         {
             Destroy(gameObject);
@@ -57,6 +42,7 @@ public class Rocket : MonoBehaviour
                 visual.transform.localScale *= scaleFactor;
             }
         }
+
         Collider2D[] enemiesHit = Physics2D.OverlapCircleAll(transform.position, explosionRadius, enemyLayer);
 
         foreach (Collider2D enemyCollider in enemiesHit)
