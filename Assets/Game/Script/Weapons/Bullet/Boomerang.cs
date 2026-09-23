@@ -12,7 +12,7 @@ public class Boomerang : Projectile
 
     private List<IDamageable> hitEnemies = new List<IDamageable>();
 
-    private Camera mainCamera;
+
     private Vector2 spriteSize;
     private float minX, maxX, minY, maxY;
 
@@ -27,7 +27,6 @@ public class Boomerang : Projectile
 
     void Start()
     {
-        mainCamera = Camera.main;
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         if (sr != null) spriteSize = sr.bounds.extents;
     }
@@ -65,20 +64,21 @@ public class Boomerang : Projectile
 
     bool CheckOutOfBounds()
     {
-        if (mainCamera == null) return false;
+        if (CameraBounds.instance == null) return false;
 
-        float camDistance = Mathf.Abs(mainCamera.transform.position.z - transform.position.z);
-        Vector3 bottomLeft = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, camDistance));
-        Vector3 topRight = mainCamera.ViewportToWorldPoint(new Vector3(1, 1, camDistance));
-
-        minX = bottomLeft.x + spriteSize.x;
-        maxX = topRight.x - spriteSize.x;
-        minY = bottomLeft.y + spriteSize.y;
-        maxY = topRight.y - spriteSize.y;
+        minX = CameraBounds.instance.MinX + spriteSize.x;
+        maxX = CameraBounds.instance.MaxX - spriteSize.x;
+        minY = CameraBounds.instance.MinY + spriteSize.y;
+        maxY = CameraBounds.instance.MaxY - spriteSize.y;
 
         Vector3 currentPos = transform.position;
 
-        return currentPos.x <= minX || currentPos.x >= maxX || currentPos.y <= minY || currentPos.y >= maxY;
+        if (currentPos.x <= minX || currentPos.x >= maxX || currentPos.y <= minY || currentPos.y >= maxY)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     void ReturnToPlayer()

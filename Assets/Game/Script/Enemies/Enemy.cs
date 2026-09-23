@@ -7,6 +7,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public GameObject xp;
     public float speed;
 
+    [Header("Loot")]
+    public LootTable lootTable;
+    [Range(0f, 1f)] public float chestDropChance;
+
     protected Vector2 direction;
     protected FlashEffect flashEffect;
 
@@ -44,7 +48,24 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         {
             Instantiate(xp, transform.position, Quaternion.identity);
         }
+        TryDropLoot();
 
         Destroy(gameObject);
+    }
+
+    protected void TryDropLoot()
+    {
+        if (lootTable == null) return;
+
+        if (Random.value <= chestDropChance)
+        {
+            GameObject drop = lootTable.GetRandomDrop();
+
+            if (drop != null)
+            {
+                Instantiate(drop, transform.position, Quaternion.identity);
+            }
+        }
+
     }
 }

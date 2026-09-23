@@ -9,7 +9,6 @@ public class Arrow : Projectile
 
     private List<IDamageable> hitEnemies = new List<IDamageable>();
 
-    private Camera mainCamera;
     private Vector2 spriteSize;
     private float minX, maxX, minY, maxY;
 
@@ -25,7 +24,6 @@ public class Arrow : Projectile
 
     void Start()
     {
-        mainCamera = Camera.main;
 
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         if (sr != null) spriteSize = sr.bounds.extents;
@@ -47,16 +45,12 @@ public class Arrow : Projectile
 
     void UpdateBoundsAndBounce()
     {
-        if (mainCamera == null) return;
+        if (CameraBounds.instance == null) return;
 
-        float camDistance = Mathf.Abs(mainCamera.transform.position.z - transform.position.z);
-        Vector3 bottomLeft = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, camDistance));
-        Vector3 topRight = mainCamera.ViewportToWorldPoint(new Vector3(1, 1, camDistance));
-
-        minX = bottomLeft.x + spriteSize.x;
-        maxX = topRight.x - spriteSize.x;
-        minY = bottomLeft.y + spriteSize.y;
-        maxY = topRight.y - spriteSize.y;
+        minX = CameraBounds.instance.MinX + spriteSize.x;
+        maxX = CameraBounds.instance.MaxX - spriteSize.x;
+        minY = CameraBounds.instance.MinY + spriteSize.y;
+        maxY = CameraBounds.instance.MaxY - spriteSize.y;
 
         Vector3 currentPos = transform.position;
         bool didBounce = false;
@@ -103,9 +97,14 @@ public class Arrow : Projectile
 
             if (dmgObj != null && !hitEnemies.Contains(dmgObj))
             {
-                DamageSystem.ApplyDamage(other.gameObject, damage);
+                OnHitEnemy(other.gameObject);
                 hitEnemies.Add(dmgObj);
             }
         }
+    }
+
+    protected override void OnHitEnemy(GameObject enemyObj)
+    {
+        DamageSystem.ApplyDamage(enemyObj, damage);
     }
 }

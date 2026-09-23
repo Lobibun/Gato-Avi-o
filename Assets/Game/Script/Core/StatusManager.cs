@@ -54,13 +54,7 @@ public class StatusManager : MonoBehaviour
                 healthLevel++;
                 if (Player.instance != null)
                 {
-                    Player.instance.maxHp += 2f;
-                    Player.instance.currentHp += 2f;
-                    
-                    if(GameControler.instance != null)
-                    {
-                        GameControler.instance.UpdateHpText(Player.instance.currentHp);
-                    }
+                    Player.instance.RefreshMaxHp();
                 }
                 break;
 
@@ -103,7 +97,7 @@ public class StatusManager : MonoBehaviour
     public float GetProjectileSpeedBonus() => projectileSpeedLevel * 0.2f;
     public float GetAreaBonus() => areaLevel * 0.2f;
     public float GetMovementSpeedBonus() => movementSpeedLevel *0.5f;
-    public float GetHealthBonus() => healthLevel * 0.5f;
+    public float GetHealthBonus() => healthLevel * 2f;
     public float GetCooldownReductionBonus() => cooldownReductionLevel * 0.1f;
     public float GetArmorBonus() => armorLevel * 1.0f;
     public float GetDurationBonus() => durationLevel * 0.3f;

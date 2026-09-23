@@ -39,6 +39,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2804244886233054847
 SpriteRenderer:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -84,6 +85,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 60143caa706247f4fa4943bc93ed0f57, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -93,8 +95,8 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!114 &1262219925414399907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108,8 +110,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 2
-  speed: 1.31
   xp: {fileID: 2842407935914802033, guid: 318c5c2ba51387c40a8f4deab995bf43, type: 3}
+  speed: 1.31
+  lootTable: {fileID: 11400000, guid: b0eb2ab81f90b9243a0c37eb1f7e1a2d, type: 2}
+  chestDropChance: 0.01
   amplitude: 0.5
   frequency: 2
 --- !u!50 &6469732492676580780
